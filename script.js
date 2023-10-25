@@ -2,6 +2,8 @@ const main = document.getElementById('main');
 const addUserBtn = document.getElementById('add-user');
 const doubleMoneyBtn = document.getElementById('double');
 const showMillionairesBtn = document.getElementById('show-millionaires');
+const sortBtn = document.getElementById('sort');
+const calculateWealthBtn = document.getElementById('calculate-wealth');
 let data = []
 
 getUsers()
@@ -17,7 +19,7 @@ async function getUsers() {
 
         const newUer = {
             name: `${user.name.first} ${user.name.last}`,
-            money: Math.floor(Math.random() * 1000000)
+            money: Math.floor(Math.random() * 100000)
         }
 
         addData(newUer);
@@ -42,7 +44,7 @@ const addData = (obj) => {
 }
 
 const moneyFormat = (number) => {
-    return '$' + number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    return 'Rs.' + number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }
 
 const doubleMoney = () => {
@@ -54,11 +56,30 @@ const doubleMoney = () => {
 }
 
 const showMillionaires = () => {
-    data = data.filter(user => user.money > 1000000);
+    data = data.filter(user => user.money > 100000);
 
     addData();
+}
+
+const sortByMoney = () => {
+    data = data.sort((a, b) => b.money - a.money);
+
+    addData()
+    calculateWealth()
+}
+
+const calculateWealth = () => {
+    let total = data.reduce((acc, user) => (acc + user.money), 0)
+
+    const wealthEl = document.createElement('div');
+    wealthEl.innerHTML = `<h3>Total Wealth: <strong>${moneyFormat(
+        total
+    )}</strong></h3>`;
+    main.appendChild(wealthEl);
 }
 
 addUserBtn.addEventListener('click', getUsers);
 doubleMoneyBtn.addEventListener('click', doubleMoney);
 showMillionairesBtn.addEventListener('click', showMillionaires);
+sortBtn.addEventListener('click', sortByMoney);
+calculateWealthBtn.addEventListener('click', calculateWealth);
