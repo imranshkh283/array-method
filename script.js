@@ -1,6 +1,7 @@
 const main = document.getElementById('main');
 const addUserBtn = document.getElementById('add-user');
 const doubleMoneyBtn = document.getElementById('double');
+const showMillionairesBtn = document.getElementById('show-millionaires');
 let data = []
 
 getUsers()
@@ -52,5 +53,12 @@ const doubleMoney = () => {
     addData();
 }
 
+const showMillionaires = () => {
+    data = data.filter(user => user.money > 1000000);
+
+    addData();
+}
+
 addUserBtn.addEventListener('click', getUsers);
 doubleMoneyBtn.addEventListener('click', doubleMoney);
+showMillionairesBtn.addEventListener('click', showMillionaires);
